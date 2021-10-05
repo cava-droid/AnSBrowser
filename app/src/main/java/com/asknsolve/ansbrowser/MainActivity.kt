@@ -1,7 +1,11 @@
 package com.asknsolve.ansbrowser
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.webkit.WebViewClient
 import com.asknsolve.ansbrowser.databinding.ActivityMainBinding
@@ -51,5 +55,45 @@ class MainActivity : AppCompatActivity() {
             // 그렇지 않다면 원래 동작을 수행
            super.onBackPressed()
         }
+    }
+
+    // 옵션 메뉴 리소스 지정
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId) {
+            R.id.action_google, R.id.action_home -> {
+                binding.webView.loadUrl("http://www.google.com")
+                return true
+            }
+            R.id.action_naver -> {
+                binding.webView.loadUrl("http://www.naver.com")
+                return true
+            }
+            R.id.action_daum -> {
+                binding.webView.loadUrl("http://www.daum.net")
+                return true
+            }
+            R.id.action_call -> {
+                val intent = Intent(Intent.ACTION_DIAL)
+                intent.data = Uri.parse("tel:010-5353-7642")
+                if(intent.resolveActivity(packageManager) != null) {
+                    startActivity(intent)
+                }
+                return true
+            }
+            R.id.action_send_text -> {
+                // 문자 보내기
+                return true
+            }
+            R.id.action_email -> {
+                // 이메일 보내기
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
