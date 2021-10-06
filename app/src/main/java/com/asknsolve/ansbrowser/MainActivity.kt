@@ -4,8 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ContextMenu
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.webkit.WebViewClient
 import com.asknsolve.ansbrowser.databinding.ActivityMainBinding
@@ -43,6 +45,9 @@ class MainActivity : AppCompatActivity() {
                 false
             }
         }
+
+        // 컨텍스트 메뉴 등록
+        registerForContextMenu(binding.webView)
     }
 
     // 뒤로 가기 동작 재정의
@@ -95,5 +100,28 @@ class MainActivity : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu?,
+        v: View?,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        menuInflater.inflate(R.menu.context, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when(item?.itemId){
+            R.id.action_share -> {
+                // 페이지 공유
+                return true
+            }
+            R.id.action_browser -> {
+                // 기본 웹 브라우저에서 열기
+                return true
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 }
